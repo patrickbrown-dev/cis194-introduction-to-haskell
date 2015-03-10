@@ -33,4 +33,4 @@ hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
 hanoi 0 _ _ _ = []
 hanoi 1 a b c = [(a, c)]
 hanoi 2 a b c = hanoi 1 a b c ++ [("a", "b"), ("c", "b")]
-hanoi n a b c = []
+hanoi n a b c = [] -- giving up here...

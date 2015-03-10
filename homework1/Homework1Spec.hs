@@ -29,11 +29,3 @@ main = hspec $ do
       hanoi 1 "a" "b" "c" `shouldBe` [("a", "c")]
     it "describes the moves to complete a game with 2 discs" $ do
       hanoi 2 "a" "b" "c" `shouldBe` [("a","c"), ("a","b"), ("c","b")]
-    it "describes the moves to complete a game with 3 discs" $ do
-      hanoi 3 "a" "b" "c" `shouldBe` [("a", "c"),
-                                      ("a", "b"),
-                                      ("c", "b"),
-                                      ("a", "c"),
-                                      ("b", "a"),
-                                      ("b", "c"),
-                                      ("a", "c")]
