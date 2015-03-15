@@ -27,6 +27,8 @@ sumDigits (x:xs) = (sum $ toDigits x) + sumDigits xs
 validate :: Integer -> Bool
 validate n = (sumDigits $ doubleEveryOther $ toDigits n) `mod` 10 == 0
 
+
+-- Towers of hanoi problem
 type Peg = String
 type Move = (Peg, Peg)
 hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
