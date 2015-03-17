@@ -3,6 +3,16 @@ module LogAnalysis where
 
 import Log
 
+build :: [LogMessage] -> MessageTree
+build [] = Leaf
+build n = _build n Leaf
+
+_build :: [LogMessage] -> MessageTree -> MessageTree
+_build [] tree = tree
+_build (x:xs) tree = let newTree = insert x tree
+                     in _build xs newTree
+
+
 -- A MessageTree should be sorted by timestamp: that is, the timestamp of a
 -- LogMessage in any Node should be greater than all timestamps of any
 -- LogMessage in the left subtree, and less than all timestamps of any

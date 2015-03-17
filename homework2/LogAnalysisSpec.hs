@@ -38,3 +38,9 @@ main = hspec $ do
           newLog  = LogMessage Info 49 "new:49"
           tree    = Node (Node Leaf leftLog Leaf) rootLog Leaf
       insert newLog tree `shouldBe` Node (Node Leaf leftLog (Node Leaf newLog Leaf)) rootLog Leaf
+  describe "build" $ do
+    it "should built a correct tree" $ do
+      let rootLog  = LogMessage Info 50 "root:50"
+          leftLog  = LogMessage Info 49 "left:49"
+          rightLog = LogMessage Info 51 "right:51"
+      build [rootLog, leftLog, rightLog] `shouldBe` Node (Node Leaf leftLog Leaf) rootLog (Node Leaf rightLog Leaf)
