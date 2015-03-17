@@ -3,6 +3,20 @@ module LogAnalysis where
 
 import Log
 
+-- A MessageTree should be sorted by timestamp: that is, the timestamp of a
+-- LogMessage in any Node should be greater than all timestamps of any
+-- LogMessage in the left subtree, and less than all timestamps of any
+-- LogMessage in the right child.
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) n = n
+insert newLog Leaf = Node Leaf newLog Leaf
+insert newLog (Node left nodeLog right)
+  | newLog `isLessThanLog` nodeLog = Node (insert newLog left) nodeLog right
+  | otherwise                      = Node left nodeLog (insert newLog right)
+
+isLessThanLog :: LogMessage -> LogMessage -> Bool
+isLessThanLog (LogMessage _ xtime _) (LogMessage _ ytime _) = xtime < ytime
+
 parse :: String -> [LogMessage]
 parse n =
   let logs = lines n
@@ -14,7 +28,7 @@ parseMessage n
   | isError n   = parseError n
   | isWarning n = parseWarning n
   | isInfo n    = parseInfo n
-  | otherwise = Unknown n
+  | otherwise   = Unknown n
 
 parseError :: String -> LogMessage
 parseError n =
@@ -33,19 +47,19 @@ parseInfo n =
 
 isError :: String -> Bool
 isError (x:_) = if x == 'E'
-                 then True
-                 else False
+                then True
+                else False
 isError _ = False
 
 isWarning :: String -> Bool
 isWarning (x:_) = if x == 'W'
-                   then True
-                   else False
+                  then True
+                  else False
 isWarning _ = False
 
 
 isInfo :: String -> Bool
 isInfo (x:_) = if x == 'I'
-                then True
-                else False
+               then True
+               else False
 isInfo _ = False
