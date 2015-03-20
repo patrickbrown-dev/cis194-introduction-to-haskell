@@ -3,6 +3,19 @@ module LogAnalysis where
 
 import Log
 
+-- Filter out error logs with severity >= 50
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong [] = []
+whatWentWrong ((LogMessage (Error severity) _ msg):xs)
+  | severity >= 50 = [msg] ++ whatWentWrong xs
+  | otherwise      = whatWentWrong xs
+whatWentWrong (_:xs) = whatWentWrong xs
+
+-- Takes a BST and returns list of elems in order.
+inOrder :: MessageTree -> [LogMessage]
+inOrder Leaf = []
+inOrder (Node left nodeLog right) = (inOrder left) ++ [nodeLog] ++ (inOrder right)
+
 build :: [LogMessage] -> MessageTree
 build [] = Leaf
 build n = _build n Leaf
@@ -11,7 +24,6 @@ _build :: [LogMessage] -> MessageTree -> MessageTree
 _build [] tree = tree
 _build (x:xs) tree = let newTree = insert x tree
                      in _build xs newTree
-
 
 -- A MessageTree should be sorted by timestamp: that is, the timestamp of a
 -- LogMessage in any Node should be greater than all timestamps of any

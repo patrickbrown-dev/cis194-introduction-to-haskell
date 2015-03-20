@@ -14,7 +14,7 @@ main = hspec $ do
     it "should handle invalid logs" $ do
       parseMessage "This is not in the right format" `shouldBe` Unknown "This is not in the right format"
   describe "insert" $ do
-    it "should return the same tree if log type is unknown" $ do
+    it"should return the same tree if log type is unknown" $ do
       let tree   = Leaf
           badLog = Unknown "unknown"
       insert badLog tree `shouldBe` tree
@@ -44,3 +44,26 @@ main = hspec $ do
           leftLog  = LogMessage Info 49 "left:49"
           rightLog = LogMessage Info 51 "right:51"
       build [rootLog, leftLog, rightLog] `shouldBe` Node (Node Leaf leftLog Leaf) rootLog (Node Leaf rightLog Leaf)
+  describe "inOrder" $ do
+    it "should return logs in order" $ do
+      let firstLog  = LogMessage Info 51 "1st:51"
+          secondLog = LogMessage Info 52 "2nd:52"
+          thirdLog  = LogMessage Info 53 "3rd:53"
+          fourthLog = LogMessage Info 54 "4th:54"
+          tree      = build [fourthLog, secondLog, firstLog, thirdLog]
+      inOrder tree `shouldBe` [firstLog, secondLog, thirdLog, fourthLog]
+    it "should parse out Unknown messages" $ do
+      let firstLog   = LogMessage Info 51 "1st:51"
+          secondLog  = LogMessage Info 52 "2nd:52"
+          thirdLog   = LogMessage Info 53 "3rd:53"
+          unknownLog = Unknown "unknown"
+          tree       = build [secondLog, unknownLog, firstLog, thirdLog]
+      inOrder tree `shouldBe` [firstLog, secondLog, thirdLog]
+  describe "whatWentWrong" $ do
+    it "should filter out error messages with severity above 49" $ do
+      let log1 = LogMessage Info 51 "duck"
+          log2 = LogMessage (Error 49) 53 "duck"
+          log3 = Unknown "duck"
+          log4 = LogMessage (Error 50) 52 "goose"
+          list = [log1, log2, log3, log4]
+      whatWentWrong list `shouldBe` ["goose"]
