@@ -106,3 +106,11 @@ main = hspec $ do
         lastOfGroup 3 [1,2,3,4,5,6,7,8,9] `shouldBe` [3,6,9]
       it "should ignore incomplete groups" $ do
         lastOfGroup 3 [1,2,3,4,5,6,7,8] `shouldBe` [3,6]
+    describe "localMaxima" $ do
+      it "should find the local maxima" $ do
+        localMaxima [2,3,4,1,5] `shouldBe` [4]
+      it "should detect when there's multiple local maximas" $ do
+        localMaxima [2,9,5,6,1] `shouldBe` [9,6]
+      it "should return an empty list when there's no local maxima" $ do
+        localMaxima [1,2,3,4,5] `shouldBe` []
+

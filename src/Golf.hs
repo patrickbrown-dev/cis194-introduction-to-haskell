@@ -22,3 +22,10 @@ lastOfGroup n xs
   | n > 0          = last x : lastOfGroup n (drop n xs)
   | otherwise      = error "Negative n"
   where x = take n xs
+
+
+localMaxima :: [Integer] -> [Integer]
+localMaxima (x:y:z:xs)
+  | (x < y) && (y > z) = y : localMaxima ([y] ++ [z] ++ xs)
+  | otherwise          = localMaxima ([y] ++ [z] ++ xs)
+localMaxima _ = []
