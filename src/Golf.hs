@@ -6,23 +6,19 @@ module Golf where
 -- nth list in the output should contain every nth element from the
 -- input list.
 skips :: [a] -> [[a]]
-skips xs = [xs]
+skips [] = [[]]
+skips xs = skips' 1 (length xs) xs
 
--- skips' :: Int -> Int -> [a] -> [[a]]
--- skips' _ _ [] = [[]]
--- skips' n len arr
---   | n < len = [skipN arr n] ++ (skips' (n + 1) len arr)
---   | otherwise = [[]]
+skips' :: Int -> Int -> [a] -> [[a]]
+skips' _ _ [] = [[]]
+skips' n len xs = if n <= len
+                  then lastOfGroup n xs : skips' (n + 1) len xs
+                  else lastOfGroup n [xs] 
 
-group :: Int -> [a] -> [[a]]
-group _ [] = []
-group n xs
-  | n > 0 = (take n xs) : (group n (drop n xs))
-  | otherwise = error "Negative n"
-
-
-
--- _skips _ _ [] = []
--- _skips n x (y:ys)
---   | x `mod` n == 0 = [y] ++ (_skips n (x + 1) ys)
---   | otherwise      = _skips n (x + 1) ys
+lastOfGroup :: Int -> [a] -> [a]
+lastOfGroup _ [] = []
+lastOfGroup n xs
+  | n /= length x  = []
+  | n > 0          = last x : lastOfGroup n (drop n xs)
+  | otherwise      = error "Negative n"
+  where x = take n xs

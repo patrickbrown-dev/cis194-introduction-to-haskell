@@ -101,15 +101,8 @@ main = hspec $ do
     describe "skips" $ do
       it "should contain every n element from the input list in the nth list" $ do
         skips "hello!" `shouldBe` ["hello!", "el!", "l!", "l", "o", "!"]
-    describe "group" $ do
+    describe "lastOfGroup" $ do
       it "should group into sublist modulo n" $ do
-        group 3 [1,2,3,4,5,6,7,8,9] `shouldBe` [[1,2,3],[4,5,6],[7,8,9]]
-    -- describe "skipN" $ do
-    --   it "should contain entire list when n is 1" $ do
-    --     skipN "ABCD" 1 `shouldBe` "ABCD"
-    --   it "should skip every 2 elems" $ do
-    --     let x = "ABCD"
-    --     skipN x 2 `shouldBe` "BD"
-    --   it "should skip every 3 elems" $ do
-    --     let x = "ABCDEFGHI"
-    --     skipN x 3 `shouldBe` "CFI"
+        lastOfGroup 3 [1,2,3,4,5,6,7,8,9] `shouldBe` [3,6,9]
+      it "should ignore incomplete groups" $ do
+        lastOfGroup 3 [1,2,3,4,5,6,7,8] `shouldBe` [3,6]
