@@ -113,4 +113,3 @@ main = hspec $ do
         localMaxima [2,9,5,6,1] `shouldBe` [9,6]
       it "should return an empty list when there's no local maxima" $ do
         localMaxima [1,2,3,4,5] `shouldBe` []
-

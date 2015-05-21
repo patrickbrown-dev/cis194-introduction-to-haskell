@@ -13,7 +13,7 @@ skips' :: Int -> Int -> [a] -> [[a]]
 skips' _ _ [] = [[]]
 skips' n len xs = if n <= len
                   then lastOfGroup n xs : skips' (n + 1) len xs
-                  else lastOfGroup n [xs] 
+                  else lastOfGroup n [xs]
 
 lastOfGroup :: Int -> [a] -> [a]
 lastOfGroup _ [] = []
